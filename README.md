@@ -1,5 +1,3 @@
-# from-silicon-to-screen# From Silicon to Screen
-
 **From Silicon to Screen** is a deep, end-to-end exploration of how modern software systems work —  
 from hardware and operating systems to browsers, backend systems, databases, cloud, and users.
 
