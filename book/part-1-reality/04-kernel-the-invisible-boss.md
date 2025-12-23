@@ -315,8 +315,11 @@ We are ready to connect machines together.
 
 👉 **How does the internet actually work?**
 
-Next chapter:
-05-how-the-internet-works.md
+➡️ **Next:**  
+[Chapter 5 — How Internet works?](../part-2-networking/05-how-the-internet-works.md)
+
+⬅️ **Previous:**  
+[Chapter 3 — Operating system](./03-operating-systems.md)
 
 
 This is where software leaves the machine.

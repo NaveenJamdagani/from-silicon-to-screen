@@ -47,7 +47,9 @@ and move upward to **abstractions** (networking, APIs, UI).
 This repository is designed to be read **sequentially**.
 
 ▶️ **Entry Point**  
-[book/part-1-reality/00-how-to-read-this-book.md](book/part-1-reality/00-how-to-read-this-book.md)
+## Continue Reading
+
+[How to read this book](./book/00-how-to-read-this-book.md)
 
 
 Skipping chapters will create gaps in understanding by design.

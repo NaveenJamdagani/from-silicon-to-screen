@@ -299,4 +299,8 @@ The answer is the most powerful software ever written:
 Next chapter:
 03-operating-systems.md
 
-Do not skip it.
+➡️ **Next:**  
+[Chapter 3 — Operating system](./03-operating-systems.md)
+
+⬅️ **Previous:**  
+[Chapter 1 — What is Computer really?](./01-what-is-a-computer-really.md)

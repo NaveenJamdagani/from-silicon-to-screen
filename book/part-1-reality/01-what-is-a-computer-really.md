@@ -248,7 +248,5 @@ we move to the next unavoidable question:
 
 👉 **Where does data live, and why does memory matter so much?**
 
-Next chapter:
-02-operating-systems.md
-
-Do not skip it.
+➡️ **Next:**  
+[Chapter 2 — Memory,storage,time](./02-memory-storage-time.md)

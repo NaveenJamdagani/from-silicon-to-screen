@@ -34,3 +34,8 @@ If you don’t understand a chapter:
 Everything depends on what came before.
 
 This is intentional.
+
+Start your Journey
+
+➡️ **Next:**  
+[Chapter 1 — What is Computer really?](./part-1-reality/01-what-is-a-computer-really.md)

@@ -333,8 +333,8 @@ The answer is the most privileged software ever written:
 
 > The Kernel.
 
-Next chapter:
-04-kernel-the-invisible-boss.md
+➡️ **Next:**  
+[Chapter 4 — The Kernel: The Invisible Boss](./04-kernel-the-invisible-boss.md)
 
-
-Do not skip it.
+⬅️ **Previous:**  
+[Chapter 2 — Memory,storage,time](./02-memory-storage-time.md)
