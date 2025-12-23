@@ -317,9 +317,9 @@ We are ready to connect machines together.
 
 ➡️ **Next:**  
 [Chapter 5 — How Internet works?](../part-2-networking/05-how-the-internet-works.md)
+This is where software leaves the machine.
 
 ⬅️ **Previous:**  
 [Chapter 3 — Operating system](./03-operating-systems.md)
 
 
-This is where software leaves the machine.
