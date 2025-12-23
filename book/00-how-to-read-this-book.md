@@ -1,20 +1,3 @@
-
-Then proceed sequentially.  
-**Do not skip chapters. This is intentional.**
-
----
-
-## 🛠 Status
-
-This repository is actively evolving.  
-Each chapter is designed to be **timeless** and **framework-agnostic**.
-
----
-
-## 📜 License
-
-MIT (Knowledge should be free)
-
 # How to Read This Book
 
 This book is written in **layers**, not topics.

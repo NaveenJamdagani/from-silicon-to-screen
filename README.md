@@ -47,3 +47,23 @@ and move upward to **abstractions** (networking, APIs, UI).
 ## 🚀 How To Read This Repo
 
 Start here:
+
+book/00-how-to-read-this-book.md
+
+
+Then proceed sequentially.  
+**Do not skip chapters. This is intentional.**
+
+---
+
+## 🛠 Status
+
+This repository is actively evolving.  
+Each chapter is designed to be **timeless** and **framework-agnostic**.
+
+---
+
+## 📜 License
+
+MIT (Knowledge should be free)
+
