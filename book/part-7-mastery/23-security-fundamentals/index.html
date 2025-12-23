@@ -1,0 +1,2393 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A systems-first guide to how software actually works — end to end">
+      
+      
+        <meta name="author" content="Naveen Jamdagani">
+      
+      
+      
+        <link rel="prev" href="../../part-6-devops/22-ci-cd-and-deployment/">
+      
+      
+        <link rel="next" href="../24-observability/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Security Fundamentals - From Silicon to Screen</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#chapter-23-security-fundamentals-assume-breach" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="From Silicon to Screen" class="md-header__button md-logo" aria-label="From Silicon to Screen" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            From Silicon to Screen
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Security Fundamentals
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/NaveenJamdagani/from-silicon-to-screen" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    from-silicon-to-screen
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="From Silicon to Screen" class="md-nav__button md-logo" aria-label="From Silicon to Screen" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    From Silicon to Screen
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/NaveenJamdagani/from-silicon-to-screen" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    from-silicon-to-screen
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../README.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    README
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to Read
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    How to Read
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../00-how-to-read-this-book/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to Read This Book
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 1 — Reality
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 1 — Reality
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part-1-reality/01-what-is-a-computer-really/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What Is a Computer, Really?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part-1-reality/02-memory-storage-time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Memory, Storage & Time
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part-1-reality/03-operating-systems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operating Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part-1-reality/04-kernel-the-invisible-boss/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kernel: The Invisible Boss
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 2 — Networking
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 2 — Networking
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part-2-networking/05-how-the-internet-works/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How the Internet Works
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part-2-networking/06-tcp-ip-without-fear/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TCP/IP Without Fear
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part-2-networking/07-dns-https-trust/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DNS, HTTPS & Trust
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 3 — Clients
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 3 — Clients
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part-3-clients/08-browser-internals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Browser Internals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part-3-clients/09-javascript-runtimes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JavaScript Runtimes (Browser vs Node)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part-3-clients/10-mobile-apps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mobile Apps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part-3-clients/11-desktop-apps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Desktop Apps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 4 — Frontend Systems
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 4 — Frontend Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part-4-frontend/12-frontend-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontend Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part-4-frontend/13-react-explained-properly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Explained Properly
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part-4-frontend/14-frontend-performance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontend Performance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 5 — Backend Systems
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 5 — Backend Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part-5-backend/15-what-is-a-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What Is a Server?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part-5-backend/16-nodejs-internals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Node.js Internals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part-5-backend/17-apis-and-communication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    APIs & Communication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part-5-backend/18-databases-real-understanding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Databases (Real Understanding)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 6 — DevOps & Production
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 6 — DevOps & Production
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part-6-devops/19-from-laptop-to-production/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    From Laptop to Production
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part-6-devops/20-docker-and-containers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker & Containers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part-6-devops/21-kubernetes-conceptual/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes (Conceptual Clarity)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part-6-devops/22-ci-cd-and-deployment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CI/CD & Deployment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 7 — Mastery
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 7 — Mastery
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-the-first-rule-of-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. The First Rule of Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-security-is-a-chain-not-a-feature" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Security Is a Chain, Not a Feature
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-authentication-vs-authorization-frequently-confused" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Authentication vs Authorization (Frequently Confused)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Authentication vs Authorization (Frequently Confused)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authorization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authorization
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-trust-boundaries-where-attacks-happen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Trust Boundaries (Where Attacks Happen)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-input-validation-output-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Input Validation &amp; Output Encoding
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-owasp-top-risks-reality-not-memorization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. OWASP Top Risks (Reality, Not Memorization)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-secrets-management-the-most-common-failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Secrets Management (The Most Common Failure)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-least-privilege-power-is-dangerous" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Least Privilege (Power Is Dangerous)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-network-security-is-not-enough" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Network Security Is Not Enough
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-dependency-security-your-supply-chain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Dependency Security (Your Supply Chain)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-logging-monitoring-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Logging, Monitoring &amp; Detection
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-secure-defaults-beat-secure-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Secure Defaults Beat Secure Options
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-security-vs-usability-the-tradeoff" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Security vs Usability (The Tradeoff)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-incident-response-when-things-go-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Incident Response (When Things Go Wrong)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-interview-lens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Interview Lens
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-production-lens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Production Lens
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-common-myths-destroyed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Common Myths (Destroyed)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-the-mental-model-memorize-this" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. The Mental Model (Memorize This)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#continue-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Continue Reading
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-observability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Observability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-one-request-one-journey/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    One Request, One Journey (End to End)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-the-first-rule-of-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. The First Rule of Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-security-is-a-chain-not-a-feature" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Security Is a Chain, Not a Feature
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-authentication-vs-authorization-frequently-confused" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Authentication vs Authorization (Frequently Confused)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Authentication vs Authorization (Frequently Confused)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authorization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authorization
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-trust-boundaries-where-attacks-happen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Trust Boundaries (Where Attacks Happen)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-input-validation-output-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Input Validation &amp; Output Encoding
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-owasp-top-risks-reality-not-memorization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. OWASP Top Risks (Reality, Not Memorization)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-secrets-management-the-most-common-failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Secrets Management (The Most Common Failure)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-least-privilege-power-is-dangerous" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Least Privilege (Power Is Dangerous)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-network-security-is-not-enough" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Network Security Is Not Enough
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-dependency-security-your-supply-chain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Dependency Security (Your Supply Chain)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-logging-monitoring-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Logging, Monitoring &amp; Detection
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-secure-defaults-beat-secure-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Secure Defaults Beat Secure Options
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-security-vs-usability-the-tradeoff" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Security vs Usability (The Tradeoff)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-incident-response-when-things-go-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Incident Response (When Things Go Wrong)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-interview-lens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Interview Lens
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-production-lens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Production Lens
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-common-myths-destroyed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Common Myths (Destroyed)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-the-mental-model-memorize-this" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. The Mental Model (Memorize This)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#continue-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Continue Reading
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="chapter-23-security-fundamentals-assume-breach">Chapter 23 — Security Fundamentals (Assume Breach)<a class="headerlink" href="#chapter-23-security-fundamentals-assume-breach" title="Permanent link">&para;</a></h1>
+<p>Security is often treated as:
+- A checklist
+- A final step
+- Someone else’s responsibility</p>
+<p>That mindset causes breaches.</p>
+<p>This chapter explains security as a <strong>systems property</strong> —<br />
+something that must be designed in, not added on.</p>
+<hr />
+<h2 id="1-the-first-rule-of-security">1. The First Rule of Security<a class="headerlink" href="#1-the-first-rule-of-security" title="Permanent link">&para;</a></h2>
+<p>The most important security assumption is:</p>
+<blockquote>
+<p><strong>Assume breach.</strong></p>
+</blockquote>
+<p>Assume that:
+- Someone will scan your system
+- Credentials will leak
+- Dependencies will have vulnerabilities
+- Networks will be hostile</p>
+<p>Security is about <strong>limiting damage</strong>, not preventing all attacks.</p>
+<hr />
+<h2 id="2-security-is-a-chain-not-a-feature">2. Security Is a Chain, Not a Feature<a class="headerlink" href="#2-security-is-a-chain-not-a-feature" title="Permanent link">&para;</a></h2>
+<p>Security is only as strong as the weakest link.</p>
+<p>Common weak links:
+- Hardcoded secrets
+- Over-permissioned roles
+- Unvalidated input
+- Exposed admin endpoints
+- Insecure defaults</p>
+<p>Attackers don’t break systems.
+They <strong>walk through open doors</strong>.</p>
+<hr />
+<h2 id="3-authentication-vs-authorization-frequently-confused">3. Authentication vs Authorization (Frequently Confused)<a class="headerlink" href="#3-authentication-vs-authorization-frequently-confused" title="Permanent link">&para;</a></h2>
+<h3 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Who are you?</p>
+</blockquote>
+<p>Examples:
+- Passwords
+- Tokens
+- Certificates
+- OAuth</p>
+<h3 id="authorization">Authorization<a class="headerlink" href="#authorization" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>What are you allowed to do?</p>
+</blockquote>
+<p>Examples:
+- Roles
+- Permissions
+- Access policies</p>
+<p>Most security bugs are <strong>authorization bugs</strong>, not authentication bugs.</p>
+<hr />
+<h2 id="4-trust-boundaries-where-attacks-happen">4. Trust Boundaries (Where Attacks Happen)<a class="headerlink" href="#4-trust-boundaries-where-attacks-happen" title="Permanent link">&para;</a></h2>
+<p>A trust boundary exists whenever:
+- Data crosses systems
+- Data crosses processes
+- Data crosses machines</p>
+<p>Examples:
+- Browser → Server
+- Server → Database
+- Service → Service</p>
+<p>Every boundary must assume:</p>
+<blockquote>
+<p>Incoming data is malicious.</p>
+</blockquote>
+<p>Never trust input. Ever.</p>
+<hr />
+<h2 id="5-input-validation-output-encoding">5. Input Validation &amp; Output Encoding<a class="headerlink" href="#5-input-validation-output-encoding" title="Permanent link">&para;</a></h2>
+<p>Classic attacks exploit:
+- Missing input validation
+- Unsafe output rendering</p>
+<p>Examples:
+- SQL injection
+- XSS
+- Command injection</p>
+<p>Rules:
+- Validate input at boundaries
+- Encode output at sinks
+- Never concatenate untrusted data</p>
+<p>Most injection attacks are <strong>design failures</strong>.</p>
+<hr />
+<h2 id="6-owasp-top-risks-reality-not-memorization">6. OWASP Top Risks (Reality, Not Memorization)<a class="headerlink" href="#6-owasp-top-risks-reality-not-memorization" title="Permanent link">&para;</a></h2>
+<p>The most common risks include:
+- Injection
+- Broken authentication
+- Broken access control
+- Sensitive data exposure
+- Security misconfiguration</p>
+<p>These persist because:
+- They are easy to introduce
+- They hide in plain sight
+- They are rarely tested explicitly</p>
+<p>Security failures are boring and repetitive.</p>
+<hr />
+<h2 id="7-secrets-management-the-most-common-failure">7. Secrets Management (The Most Common Failure)<a class="headerlink" href="#7-secrets-management-the-most-common-failure" title="Permanent link">&para;</a></h2>
+<p>Secrets include:
+- API keys
+- Database passwords
+- Tokens
+- Certificates</p>
+<p>Never:
+- Commit secrets to Git
+- Hardcode secrets in images
+- Share secrets across environments</p>
+<p>Secrets should be:
+- Stored securely
+- Rotatable
+- Scoped minimally</p>
+<p>Leaked secrets are how most breaches start.</p>
+<hr />
+<h2 id="8-least-privilege-power-is-dangerous">8. Least Privilege (Power Is Dangerous)<a class="headerlink" href="#8-least-privilege-power-is-dangerous" title="Permanent link">&para;</a></h2>
+<p>Every component should have:</p>
+<blockquote>
+<p>The minimum access required to function.</p>
+</blockquote>
+<p>Over-privileged systems:
+- Amplify breaches
+- Increase blast radius
+- Hide bugs</p>
+<p>Least privilege:
+- Limits damage
+- Improves understanding
+- Forces discipline</p>
+<hr />
+<h2 id="9-network-security-is-not-enough">9. Network Security Is Not Enough<a class="headerlink" href="#9-network-security-is-not-enough" title="Permanent link">&para;</a></h2>
+<p>Firewalls help.
+VPCs help.
+Private networks help.</p>
+<p>But:</p>
+<blockquote>
+<p>Internal traffic is not trusted traffic.</p>
+</blockquote>
+<p>Modern attacks:
+- Move laterally
+- Abuse internal APIs
+- Exploit misconfigurations</p>
+<p>Zero trust assumes:</p>
+<blockquote>
+<p>Every request must be authenticated and authorized.</p>
+</blockquote>
+<hr />
+<h2 id="10-dependency-security-your-supply-chain">10. Dependency Security (Your Supply Chain)<a class="headerlink" href="#10-dependency-security-your-supply-chain" title="Permanent link">&para;</a></h2>
+<p>Your system includes:
+- Open-source libraries
+- Build tools
+- Base images</p>
+<p>Risks include:
+- Known vulnerabilities
+- Malicious packages
+- Abandoned dependencies</p>
+<p>Mitigations:
+- Dependency scanning
+- Regular updates
+- Minimal dependencies</p>
+<p>You inherit the risks of your dependencies.</p>
+<hr />
+<h2 id="11-logging-monitoring-detection">11. Logging, Monitoring &amp; Detection<a class="headerlink" href="#11-logging-monitoring-detection" title="Permanent link">&para;</a></h2>
+<p>Security is not just prevention.
+It is detection.</p>
+<p>You must know:
+- Who accessed what
+- When
+- From where
+- How often</p>
+<p>Logs and alerts enable:
+- Incident response
+- Forensics
+- Accountability</p>
+<p>Silent breaches are the worst kind.</p>
+<hr />
+<h2 id="12-secure-defaults-beat-secure-options">12. Secure Defaults Beat Secure Options<a class="headerlink" href="#12-secure-defaults-beat-secure-options" title="Permanent link">&para;</a></h2>
+<p>Systems should be:
+- Secure by default
+- Unsafe only with intent</p>
+<p>If security requires:</p>
+<blockquote>
+<p>“Remembering to enable it”</p>
+</blockquote>
+<p>It will be forgotten.</p>
+<p>Design defaults that protect users.</p>
+<hr />
+<h2 id="13-security-vs-usability-the-tradeoff">13. Security vs Usability (The Tradeoff)<a class="headerlink" href="#13-security-vs-usability-the-tradeoff" title="Permanent link">&para;</a></h2>
+<p>Perfect security is unusable.
+Perfect usability is insecure.</p>
+<p>Good systems:
+- Balance friction and protection
+- Protect users from catastrophic mistakes
+- Accept small risks for usability</p>
+<p>Security is risk management, not absolutism.</p>
+<hr />
+<h2 id="14-incident-response-when-things-go-wrong">14. Incident Response (When Things Go Wrong)<a class="headerlink" href="#14-incident-response-when-things-go-wrong" title="Permanent link">&para;</a></h2>
+<p>Breaches will happen.</p>
+<p>Prepared teams have:
+- Clear escalation paths
+- Kill switches
+- Credential rotation plans
+- Communication playbooks</p>
+<p>Chaos during incidents multiplies damage.</p>
+<p>Practice matters.</p>
+<hr />
+<h2 id="15-interview-lens">15. Interview Lens<a class="headerlink" href="#15-interview-lens" title="Permanent link">&para;</a></h2>
+<p>Interviewers ask:
+- How do you secure APIs?
+- How do you handle secrets?
+- How do you prevent common attacks?</p>
+<p>They are testing:</p>
+<blockquote>
+<p>Whether you think in threat models.</p>
+</blockquote>
+<hr />
+<h2 id="16-production-lens">16. Production Lens<a class="headerlink" href="#16-production-lens" title="Permanent link">&para;</a></h2>
+<p>Real-world security failures include:
+- Publicly exposed databases
+- Overly permissive IAM roles
+- Forgotten debug endpoints
+- Expired certificates</p>
+<p>Most breaches are <strong>configuration mistakes</strong>, not hacks.</p>
+<hr />
+<h2 id="17-common-myths-destroyed">17. Common Myths (Destroyed)<a class="headerlink" href="#17-common-myths-destroyed" title="Permanent link">&para;</a></h2>
+<p>❌ “Security is the security team’s job”<br />
+✅ Security is everyone’s job</p>
+<p>❌ “We’ll add security later”<br />
+✅ Later is too late</p>
+<p>❌ “No one will target us”<br />
+✅ Automated bots don’t care who you are</p>
+<hr />
+<h2 id="18-the-mental-model-memorize-this">18. The Mental Model (Memorize This)<a class="headerlink" href="#18-the-mental-model-memorize-this" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>Security assumes failure,<br />
+limits blast radius,<br />
+and detects problems early.</p>
+</blockquote>
+<p>If you design for breach,
+you build resilient systems.</p>
+<hr />
+<h2 id="continue-reading">Continue Reading<a class="headerlink" href="#continue-reading" title="Permanent link">&para;</a></h2>
+<p>➡️ <strong>Next:</strong><br />
+<a href="../24-observability/">Chapter 24 — Observability</a></p>
+<p>⬅️ <strong>Previous:</strong><br />
+<a href="../../part-6-devops/22-ci-cd-and-deployment/">Chapter 22 — CI/CD &amp; Deployment</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../../part-6-devops/22-ci-cd-and-deployment/" class="md-footer__link md-footer__link--prev" aria-label="Previous: CI/CD &amp; Deployment">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                CI/CD & Deployment
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../24-observability/" class="md-footer__link md-footer__link--next" aria-label="Next: Observability">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Observability
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "navigation.footer", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
