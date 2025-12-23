@@ -44,9 +44,14 @@ and move upward to **abstractions** (networking, APIs, UI).
 
 ## 🚀 How To Read This Repo
 
-Start here:
+This repository is designed to be read **sequentially**.
 
-book/00-how-to-read-this-book.md
+▶️ **Entry Point**  
+[book/part-1-reality/00-how-to-read-this-book.md](book/part-1-reality/00-how-to-read-this-book.md)
+
+
+Skipping chapters will create gaps in understanding by design.
+
 
 
 Then proceed sequentially.  
