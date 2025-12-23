@@ -100,6 +100,7 @@ When you write:
 
 ```js
 setTimeout(fn, 1000);
+```
 JavaScript does not implement timers.
 
 Instead:
@@ -123,117 +124,126 @@ The browser runtime is designed for:
 - UI responsiveness
 - Security
 - User interaction
-- JavaScript cooperates with rendering and user events.
+
+JavaScript cooperates with rendering and user events.
 
 ---
 
 ## 7. Node.js Runtime: Server-Oriented Design
 
-> Node.js provides:
- - File system access
- - Network sockets
- - Process management
- - Timers
- - Streams
+Node.js provides:
+- File system access
+- Network sockets
+- Process management
+- Timers
+- Streams
 
-> Node.js is designed for:
- - I/O-heavy workloads
- - Servers
- - Tooling
- - Automation
+Node.js is designed for:
+- I/O-heavy workloads
+- Servers
+- Tooling
+- Automation
 
-There is:
+Key differences:
 - No DOM
 - No rendering pipeline
 - Different performance tradeoffs
-- Same language. Very different environment.
+
+Same language. Very different environment.
 
 ---
 
 ## 8. The Event Loop: The Traffic Controller
 
-> The event loop:
- - Watches multiple queues
- - Decides what runs next
- - Ensures the call stack is free
- - High-level flow:
- - Run synchronous code
- - Process microtasks
- - Process macrotasks
- - Repeat
+The event loop:
+- Watches multiple queues
+- Decides what runs next
+- Ensures the call stack is free
 
-Exact behavior differs between runtimes,
+High-level flow:
+1. Run synchronous code
+2. Process microtasks
+3. Process macrotasks
+4. Repeat
+
+Exact behavior differs between runtimes,  
 but the principle is the same.
 
 ---
 
 ## 9. Tasks, Microtasks, and Priority
 
-> Common async sources:
- - Timers
- - Network callbacks
- - Promises
- - They do not all have equal priority.
+Common async sources:
+- Timers
+- Network callbacks
+- Promises
+
+They do not all have equal priority.
 
 In general:
- - Microtasks (Promises) run first
- - Tasks (timers, I/O) run later
+- Microtasks (Promises) run first
+- Tasks / Macrotasks (timers, I/O) run later
 
 This explains:
- - Why Promises run before setTimeout
- - Why async code can starve rendering
- - Why subtle ordering bugs exist
- - Async does not mean unordered.
+- Why Promises run before `setTimeout`
+- Why async code can starve rendering
+- Why subtle ordering bugs exist
+
+Async does not mean unordered.
 
 ---
 
 ## 10. Garbage Collection: The Invisible Cost
 
 JavaScript uses automatic garbage collection.
-> Pros:
- - Developer convenience
- - Fewer memory bugs
 
-> Cons: 
- - Pauses
- - Unpredictable timing
- - Performance cliffs
+**Pros:**
+- Developer convenience
+- Fewer memory bugs
+
+**Cons:**
+- Pauses
+- Unpredictable timing
+- Performance cliffs
 
 Excessive allocation leads to:
- - GC pressure
- - UI jank
- - Server latency spikes
- - Memory still matters.
+- GC pressure
+- UI jank
+- Server latency spikes
+
+Memory still matters.
 
 ---
 
 ## 11. Why JavaScript Is “Single-Threaded” but Scalable
 
 JavaScript execution:
- - Runs on one thread
+- Runs on one thread
 
 But:
- - I/O happens outside the engine
- - Work is delegated to the runtime
- - Results return asynchronously
+- I/O happens outside the engine
+- Work is delegated to the runtime
+- Results return asynchronously
 
 This allows:
- - Thousands of concurrent operations
- - Without thousands of threads
- - Scalability comes from delegation, not parallel JavaScript.
+- Thousands of concurrent operations
+- Without thousands of threads
+
+Scalability comes from delegation, not parallel JavaScript.
 
 ---
 
 ## 12. Frontend vs Backend Reality
-> Frontend
- - Main thread controls rendering
- - Blocking JavaScript freezes UI
- - Responsiveness is king
 
-> Backend
- - Event loop handles many clients
- - Blocking kills throughput
- - Async is mandatory
+### Frontend
+- Main thread controls rendering
+- Blocking JavaScript freezes UI
+- Responsiveness is king
+
+### Backend
+- Event loop handles many clients
+- Blocking kills throughput
+- Async is mandatory
 
 Same model. Different constraints.
 
@@ -241,23 +251,23 @@ Same model. Different constraints.
 
 ## 13. Common Myths (Destroyed)
 
-❌ “JavaScript is slow”
-✅ Blocking JavaScript is slow
+❌ JavaScript is slow  
+✅ Blocking JavaScript is slow  
 
-❌ “Async makes code parallel”
-✅ Async makes code cooperative
+❌ Async makes code parallel  
+✅ Async makes code cooperative  
 
-❌ “Promises are magic”
-✅ Promises are scheduling contracts
+❌ Promises are magic  
+✅ Promises are scheduling contracts  
 
 ---
 
 ## 14. Interview Lens
 
 Interviewers ask:
-> Why does this block?
-> Why does async help?
-> Why does Node.js scale?
+- Why does this block?
+- Why does async help?
+- Why does Node.js scale?
 
 They want to see:
 
@@ -268,21 +278,22 @@ Do you understand the runtime, not just syntax?
 ## 15. Production Lens
 
 Real-world issues include:
- - Event loop blocking
- - Memory pressure
- - Too many timers
- - Unbounded promise chains
- - Frameworks cannot hide runtime limits.
+- Event loop blocking
+- Memory pressure
+- Too many timers
+- Unbounded promise chains
+
+Frameworks cannot hide runtime limits.
 
 ---
 
 ## 16. The Mental Model (Memorize This)
 
-JavaScript runs on one stack.
-Runtimes do the waiting.
+JavaScript runs on one stack.  
+Runtimes do the waiting.  
 The event loop decides when things continue.
 
-Understand this,
+Understand this,  
 and async stops being confusing.
 
 ---
